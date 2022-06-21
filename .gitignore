@@ -1,0 +1,6 @@
+# SSH Keys
+*.pem
+
+# Directories
+.terraform/
+.idea
