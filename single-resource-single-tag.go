@@ -15,6 +15,7 @@ func main() {
 	resources := []string{
 		"i-06114e47b6fc36fd2",
 	}
+
 	tag_key := "Name"
 	tag_value := "GoTest"
 
