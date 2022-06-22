@@ -3,8 +3,7 @@ package main
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/ec2"
-// 	"github.com/aws/aws-sdk-go/service/lambda"
+	"github.com/aws/aws-sdk-go/service/resourcegroupstaggingapi"
 
 	"fmt"
 	"log"
@@ -25,15 +24,17 @@ func main() {
 	)
 
 	// Create EC2 service client
-	svc := ec2.New(sess)
+	svc := resourcegroupstaggingapi.New(sess)
 
 	// Add tags to the created instance
-	_, errtag := svc.CreateTags(&lambda.CreateTagsInput{
-		Resources: aws.StringSlice(instances),
-		Tags: []*ec2.Tag{
+	_, errtag := svc.TagResources(&resourcegroupstaggingapi.TagResourcesInput{
+		ResourceARNList: aws.StringSlice(instances),
+		Tags: map[string]string{
 			{
-				Key:   aws.String(tag_key),
-				Value: aws.String(tag_value),
+// 				Key:   aws.String(tag_key),
+// 				Value: aws.String(tag_value),
+                "key": "Name"
+                value
 			},
 		},
 	})
@@ -44,3 +45,14 @@ func main() {
 
 	fmt.Println("Successfully tagged instance")
 }
+
+
+####
+for i in
+    service= a[0]
+    if sERVICE == ec2:
+
+ec2 id key tag_valus
+ec2 id key tag_valus
+ec2b
+s3 id

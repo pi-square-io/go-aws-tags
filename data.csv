@@ -1,0 +1,3 @@
+resource,arn,tagkey,tagvalue
+
+ec2,djkqflfkkq,Name,test
