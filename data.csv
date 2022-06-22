@@ -1,3 +1,4 @@
 resource,arn,tagkey,tagvalue
 
-ec2,djkqflfkkq,Name,test
+ec2,djkqflfkkq,Name,instance
+lambda,sdfghjklghjk,Name,lambda

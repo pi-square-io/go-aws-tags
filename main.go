@@ -13,6 +13,32 @@ type empData struct {
     tagvalue string
 }
 
+func ec2 (arn, tagkey, tagvalue string ) {
+
+    sess, _ := session.NewSession(&aws.Config{
+		Region: aws.String(region)},
+	)
+
+    svc := ec2.New(sess)
+
+	// Add tags to the created instance
+	_, errtag := svc.CreateTags(&ec2.CreateTagsInput{
+		Resources: aws.StringSlice(resources),
+		Tags: []*ec2.Tag{
+			{
+				Key:   aws.String(tagkey),
+				Value: aws.String(tagvalue),
+			},
+		},
+	})
+	if errtag != nil {
+		log.Println("Could not create tags for instance", "i-06114e47b6fc36fd2", errtag)
+		return
+	}
+
+	fmt.Println("Successfully tagged instance")
+}
+
 func main() {
 
     csvFile, err := os.Open("data.csv")
@@ -34,5 +60,10 @@ func main() {
 			tagvalue: line[3],
         }
         fmt.Println(emp.resource + " " + emp.arn + " " + emp.tagkey + " " + emp.tagvalue)
+
+        if emp.resource == ec2 {
+        ret = ec2("sdfghjklkjhgf", "Name", "test")
+        }
+
     }
 }
