@@ -1,4 +1,4 @@
-module pi-square-io
+module pi-square-io/go-aws-tags
 
 go 1.18
 

@@ -1,15 +1,14 @@
-package main
+package functions
 
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/elbv2"
-
 	"fmt"
 	"log"
 )
 
-func TagElb(elbArn []string, tagkey string, tagvalue string) {
+func TagElb(elbArns []string, tagkey string, tagvalue string, region string) {
 
 
 	sess, _ := session.NewSession(&aws.Config{
