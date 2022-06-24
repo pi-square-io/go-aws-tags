@@ -20,4 +20,6 @@ func main() {
 
 	var albArns = []string{"i-0ee77517f91d44f71"}
 	functions.TagElb(albArns, "Name", "test", *region)
+
+	functions.TagLambda("arn:aws:rds:us-east-1:974195321489:db:database-1", "Name", "test", *region)
 }

@@ -26,7 +26,7 @@ func main() {
 
 	// Add tags to the created instance
 	_, errtag := svc.TagResource(&lambda.TagResourceInput{
-		Resources: aws.String(resource),
+		Resource: aws.String(resource),
 		Tags: []*lambda.Tag{
 			{
 				Key:   aws.String(tag_key),
