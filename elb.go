@@ -37,7 +37,7 @@ func main() {
 		},
 	})
 	if errtag != nil {
-		log.Println("Could not create tags for ELB", elbArns ,errtag)
+		log.Println("Could not create tags for ELB", elbArns, errtag)
 		return
 	}
 
