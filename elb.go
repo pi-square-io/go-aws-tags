@@ -9,15 +9,8 @@ import (
 	"log"
 )
 
-func main() {
+func TagElb(elbArn []string, tagkey string, tagvalue string) {
 
-	region := "us-east-1"
-	elbArns := []string{
-		"arn:aws:elasticloadbalancing:us-east-1:974195321489:loadbalancer/app/alb-test-tag/0c69155f72f7a598",
-	}
-
-	tag_key := "Name"
-	tag_value := "GoTest"
 
 	sess, _ := session.NewSession(&aws.Config{
 		Region: aws.String(region)},
@@ -31,8 +24,8 @@ func main() {
 		ResourceArns: aws.StringSlice(elbArns),
 		Tags: []*elbv2.Tag{
 			{
-				Key:   aws.String(tag_key),
-				Value: aws.String(tag_value),
+				Key:   aws.String(tagkey),
+				Value: aws.String(tagvalue),
 			},
 		},
 	})
