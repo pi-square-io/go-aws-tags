@@ -4,7 +4,8 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/rds"
-
+	"github.com/aws/aws-sdk-go/service/ec2"
+    "flag"
 	"fmt"
 	"log"
 )
@@ -16,6 +17,9 @@ var (
 func main() {
 
     tagRds("arn:aws:rds:us-east-1:974195321489:db:database-1", "Name", "test")
+
+    var instanceId = []string {"i-0ee77517f91d44f71",}
+    tagEc2(instanceId, "Name", "test")
 }
 
 
@@ -45,7 +49,7 @@ func tagRds (arn string , tagkey string , tagvalue string ) {
 }
 
 
-func tagEc2 (id string , tagkey string , tagvalue string ) {
+func tagEc2 (id []string , tagkey string , tagvalue string ) {
 
      sess, _ := session.NewSession(&aws.Config{
 		Region: aws.String(*region)},
@@ -53,8 +57,8 @@ func tagEc2 (id string , tagkey string , tagvalue string ) {
    	svc := ec2.New(sess)
 
 	// Add tags to the created instance
-	_, errtag := svc.AddTagsToResource(&ec2.AddTagsToResourceInput{
-		Resources: aws.String(id),
+	_, errtag := svc.CreateTags(&ec2.CreateTagsInput{
+		Resources: aws.StringSlice(id),
 		Tags: []*ec2.Tag{
 			{
 				Key:   aws.String(tagkey),
@@ -63,7 +67,7 @@ func tagEc2 (id string , tagkey string , tagvalue string ) {
 		},
 	})
 	if errtag != nil {
-		log.Println("Could not create tags for rds", arn, errtag)
+		log.Println("Could not create tags for instance", errtag)
 		return
 	}
 
