@@ -22,13 +22,13 @@ func TagLambda(resourceArn, tagkey, tagvalue, region string) {
 	_, errtag := svc.TagResource(&lambda.TagResourceInput{
 		Resource: aws.String(resourceArn),
 		Tags: map[string]*string{
-				aws.String(tagkey):   aws.String(tagvalue),
+				tagkey: aws.String(tagvalue),
 		},
 	})
 	if errtag != nil {
-		log.Println("Could not create tags for instance", errtag)
+		log.Println("Could not create tags for lambda", errtag)
 		return
 	}
 
-	fmt.Println("Successfully tagged instance")
+	fmt.Println("Successfully tagged lambda")
 }
