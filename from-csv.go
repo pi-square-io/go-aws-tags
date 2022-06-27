@@ -4,13 +4,21 @@ import (
     "encoding/csv"
     "fmt"
     "os"
+    "flag"
+	"pi-square-io/go-aws-tags/functions"
 )
 
 type empData struct {
-    Name string
-    Age string
-    City string
+    resource string
+    id string
+    tagkey string
+    tagvalue string
 }
+
+var (
+	region   = flag.String("region", "us-east-1", "your AWS region")
+	)
+
 func main() {
 
     csvFile, err := os.Open("data.csv")
@@ -26,9 +34,16 @@ func main() {
     }
     for _, line := range csvLines {
         emp := empData{
-            Name: line[0],
-            Age: line[1],
-			City: line[2],
+            resource: line[0],
+            id: line[1],
+			tagkey: line[2],
+			tagvalue: line[3],
         }
-        fmt.Println(emp.Name + " " + emp.Age + " " + emp.City)
+        fmt.Println(emp.resource + " " + emp.id + " " + emp.tagkey + " " + emp.tagvalue)
+
+        if emp.resource == "ec2" {
+            var instanceId = []string{emp.id}
+		    functions.TagEc2(instanceId, emp.tagkey, emp.tagvalue, *region)
+        }
     }
+}
