@@ -1,3 +1,8 @@
-s3,my-unique-435frzqrf,dep,devops
-ec2,edfghjkl,Name,TaggedByGo
-rds,fghjk,Name,TaggedByGo
+resourcetype-1,id-or-arn-or-name,tagkey,tagvalue
+resourcetype-2,id-or-arn-or-name,tagkey,tagvalue
+.
+.
+.
+resourcetype-N,id-or-arn-or-name,tagkey,tagvalue
+
+
