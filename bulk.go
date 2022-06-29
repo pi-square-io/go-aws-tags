@@ -1,80 +1,63 @@
 package main
 
-import (
-	"flag"
-	"fmt"
-	"os"
-	"pi-square-io/go-aws-tags/functions"
-)
+import "flag"
+import "pi-square-io/go-aws-tags/functions"
 
-type empData struct {
-	resource string
-	id       string
-	tagkey   string
-	tagvalue string
+type arrayFlags []string
+
+func (i *arrayFlags) String() string {
+    return "my string representation"
 }
 
+func (i *arrayFlags) Set(value string) error {
+    *i = append(*i, value)
+    return nil
+}
 
-
-
-var (
-	region   = flag.String("region", "us-east-1", "your AWS region")
-// 	resource = flag.String("resource", "resource-type", "your AWS resource type")
-// 	id       = flag.String("id", "resource-id", "your AWS resource id")
-// 	tagkey   = flag.String("tagkey", "tagkey", "tagkey")
-// 	tagvalue = flag.String("tagvalue", "tagvalue", "tagvalue")
-)
+var resources arrayFlags
+var ids arrayFlags
+var tagKey arrayFlags
+var tagValue arrayFlags
+var region   = flag.String("region", "us-east-1", "your AWS region")
 
 func main() {
+    flag.Var(&resources, "resources", "Some description for this param.")
+    flag.Var(&ids, "ids", "Some description for this param.")
+    flag.Var(&tagKey, "tagKey", "Some description for this param.")
+    flag.Var(&tagValue, "tagValue", "Some description for this param.")
+    flag.Parse()
 
-    var mymap := map[string]string {
+    for i:=0;i<len(resources);i++ {
 
-       Name
+        if resources[i] == "ec2" {
+            var instanceId = []string{ids[i]}
+		    functions.TagEc2(instanceId, tagKey[i], tagValue[i], *region)
+         }
+
+          if resources[i] == "rds" {
+		    functions.TagRds(ids[i], tagKey[i], tagValue[i], *region)
+         }
+
+          if resources[i] == "s3" {
+		    functions.TagS3(ids[i], tagKey[i], tagValue[i], *region)
+         }
+
+          if resources[i] == "lambda" {
+		    functions.TagLambda(ids[i], tagKey[i], tagValue[i], *region)
+         }
+
+          if resources[i] == "efs" {
+		    functions.TagEfs(ids[i], tagKey[i], tagValue[i], *region)
+         }
+
+          if resources[i] == "elb" {
+            var albArns = []string{ids[i]}
+		    functions.TagElb(albArns, tagKey[i], tagValue[i], *region)
+         }
+
+        }
+
     }
 
-	csvFile, err := os.Open("data.csv")
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println("Successfully Opened CSV file")
-	defer csvFile.Close()
 
-	csvLines, err := csv.NewReader(csvFile).ReadAll()
-	if err != nil {
-		fmt.Println(err)
-	}
-	for _, line := range csvLines {
-		emp := empData{
-			resource: line[0],
-			id:       line[1],
-			tagkey:   line[2],
-			tagvalue: line[3],
-		}
 
-		if emp.resource == "ec2" {
-			var instanceId = []string{emp.id}
-			functions.TagEc2(instanceId, emp.tagkey, emp.tagvalue, *region)
-		}
-
-		if emp.resource == "rds" {
-			functions.TagRds(emp.id, emp.tagkey, emp.tagvalue, *region)
-		}
-
-		if emp.resource == "s3" {
-			functions.TagS3(emp.id, emp.tagkey, emp.tagvalue, *region)
-		}
-
-		if emp.resource == "alb" {
-			var albArns = []string{emp.id}
-			functions.TagElb(albArns, emp.tagkey, emp.tagvalue, *region)
-		}
-
-		if emp.resource == "lambda" {
-			functions.TagLambda(emp.id, emp.tagkey, emp.tagvalue, *region)
-		}
-
-		if emp.resource == "efs" {
-			functions.TagEfs(emp.id, emp.tagkey, emp.tagvalue, *region)
-		}
-	}
-}

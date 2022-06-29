@@ -30,7 +30,7 @@ func main() {
 		functions.TagS3(*id, *tagkey, *tagvalue, *region)
 	}
 
-	if *resource == "alb" {
+	if *resource == "elb" {
 		var albArns = []string{*id}
 		functions.TagElb(albArns, *tagkey, *tagvalue, *region)
 	}
